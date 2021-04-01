@@ -1,27 +1,24 @@
 defmodule LiveViewCounterWeb.Counter do
   use Phoenix.LiveView
+  alias LiveViewCounter.Count
 
-  @topic "live"
+  @topic Count.topic
 
   def mount(_params, _session, socket) do
     LiveViewCounterWeb.Endpoint.subscribe(@topic)
-    {:ok, assign(socket, :val, 0)}
+    {:ok, assign(socket, :val, Count.current())}
   end
 
   def handle_event("inc", _, socket) do
-    new_state = update(socket, :val, &(&1 + 1))
-    LiveViewCounterWeb.Endpoint.broadcast_from(self(), @topic, "inc", new_state.assigns)
-    {:noreply, new_state}
+    {:noreply, assign(socket, :val, Count.increment())}
   end
 
   def handle_event("dec", _, socket) do
-    new_state = update(socket, :val, &(&1 - 1))
-    LiveViewCounterWeb.Endpoint.broadcast_from(self(), @topic, "dec", new_state.assigns)
-    {:noreply, new_state}
+    {:noreply, assign(socket, :val, Count.decrement())}
   end
 
-  def handle_info(msg, socket) do
-    {:noreply, assign(socket, val: msg.payload.val)}
+  def handle_info({:count, count}, socket) do
+    {:noreply, assign(socket, :val, count)}
   end
 
   def render(assigns) do
