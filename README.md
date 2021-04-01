@@ -1,4 +1,16 @@
-# LiveViewCounter
+# Live View Counter
+## Description
+A counter powered by liveview.
+
+![live_view_counter_1](https://user-images.githubusercontent.com/26587110/113295722-69629d00-92ad-11eb-8c06-509c1f14b08e.gif)
+
+
+This uses the following features of the Phoenix framework
+- Live view
+- Phoenix PubSub
+- Elixir GenServer
+- Channels
+- Presence
 
 To start your Phoenix server:
 
